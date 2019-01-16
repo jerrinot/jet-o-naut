@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: hell.jet
+---
+testFramework: junit
+sourceLanguage: java
