@@ -1,4 +1,4 @@
-package info.jerrinot.micronautjet.infra;
+package info.jerrinot.micronautjet.infra.impl;
 
 import com.hazelcast.core.ILock;
 import com.hazelcast.jet.JetInstance;
@@ -16,13 +16,13 @@ import javax.inject.Singleton;
  *
  */
 @Singleton
-public class ExclusiveJobSubmitter {
+class ExclusiveJobSubmitter {
     private static final String LOCK_NAME = "jobSubmitterLock";
 
     @Inject
     private JetInstance instance;
 
-    public Job submitExclusively(Pipeline pipeline, JobConfig config) {
+    Job submitExclusively(Pipeline pipeline, JobConfig config) {
         String name = config.getName();
         if (name == null) {
             throw new IllegalArgumentException("Job name cannot be null");
@@ -42,6 +42,5 @@ public class ExclusiveJobSubmitter {
         } finally {
             lock.unlock();
         }
-
     }
 }

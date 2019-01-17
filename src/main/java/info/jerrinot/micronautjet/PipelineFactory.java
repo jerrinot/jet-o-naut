@@ -1,16 +1,13 @@
 package info.jerrinot.micronautjet;
 
-import com.hazelcast.jet.JetInstance;
-import com.hazelcast.jet.config.JobConfig;
 import com.hazelcast.jet.pipeline.Pipeline;
 import com.hazelcast.jet.pipeline.SourceBuilder;
 import com.hazelcast.jet.pipeline.StreamSource;
-import info.jerrinot.micronautjet.infra.ExclusiveJobSubmitter;
-import io.micronaut.context.annotation.Context;
+import info.jerrinot.micronautjet.infra.MicronautUtils;
+import info.jerrinot.micronautjet.infra.PipelineAndConfig;
+import io.micronaut.context.annotation.Bean;
+import io.micronaut.context.annotation.Factory;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -18,31 +15,16 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.hazelcast.jet.pipeline.Sinks.logger;
 import static info.jerrinot.micronautjet.infra.MicronautUtils.*;
 
-@Singleton
-@Context
-public final class JetApplication {
+@Factory
+public final class PipelineFactory {
     private static final String JOB_NAME = "myJob";
 
-    @Inject
-    private JetInstance jetInstance;
-
-    @Inject
-    private ExclusiveJobSubmitter jobSubmitter;
-
-    @PreDestroy
-    public void preDestroy() {
-        if (jetInstance.getHazelcastInstance().getLifecycleService().isRunning()) {
-            jetInstance.shutdown();
-        }
-    }
-
-    @PostConstruct
-    public void postConstruct() {
+    @Bean
+    public PipelineAndConfig createPipeline() {
         StreamSource<Long> globalSingletonSource = customSource();
         Pipeline pipeline = pipeline(globalSingletonSource);
 
-        JobConfig jobConfig = new JobConfig().setName(JOB_NAME);
-        jobSubmitter.submitExclusively(pipeline, jobConfig);
+        return MicronautUtils.pipelineWithName(pipeline, JOB_NAME);
     }
 
     private Pipeline pipeline(StreamSource<Long> source) {

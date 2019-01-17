@@ -1,10 +1,11 @@
 package info.jerrinot.micronautjet.infra;
 
 import com.hazelcast.jet.JetInstance;
-import com.hazelcast.jet.config.JetConfig;
+import com.hazelcast.jet.config.JobConfig;
 import com.hazelcast.jet.core.Processor;
 import com.hazelcast.jet.function.DistributedFunction;
 import com.hazelcast.jet.pipeline.ContextFactory;
+import com.hazelcast.jet.pipeline.Pipeline;
 import io.micronaut.context.ApplicationContext;
 
 public final class MicronautUtils {
@@ -14,6 +15,13 @@ public final class MicronautUtils {
 
     }
 
+    public static PipelineAndConfig pipelineAndConfig(Pipeline pipeline, JobConfig config) {
+        return new PipelineAndConfig(pipeline, config);
+    }
+
+    public static PipelineAndConfig pipelineWithName(Pipeline pipeline, String name) {
+        return new PipelineAndConfig(pipeline, new JobConfig().setName(name));
+    }
 
     public static ApplicationContext toAppContext(Processor.Context processorCtx) {
         return toAppContext0(processorCtx.jetInstance());
@@ -30,7 +38,7 @@ public final class MicronautUtils {
     }
 
 
-    static void attachAppContext(JetInstance jet, ApplicationContext context) {
+    public static void attachAppContext(JetInstance jet, ApplicationContext context) {
         jet.getHazelcastInstance().getUserContext().put(MICRONAUT_USER_CONTEXT_NAME, context);
     }
 
