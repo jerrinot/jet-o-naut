@@ -19,7 +19,7 @@ public final class MicronautUtils {
         return new PipelineAndConfig(pipeline, config);
     }
 
-    public static PipelineAndConfig pipelineWithName(Pipeline pipeline, String name) {
+    public static PipelineAndConfig namedPipeline(Pipeline pipeline, String name) {
         return new PipelineAndConfig(pipeline, new JobConfig().setName(name));
     }
 
