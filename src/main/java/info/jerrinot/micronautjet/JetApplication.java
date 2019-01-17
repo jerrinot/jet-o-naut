@@ -5,6 +5,7 @@ import com.hazelcast.jet.config.JobConfig;
 import com.hazelcast.jet.pipeline.Pipeline;
 import com.hazelcast.jet.pipeline.SourceBuilder;
 import com.hazelcast.jet.pipeline.StreamSource;
+import info.jerrinot.micronautjet.infra.ExclusiveJobSubmitter;
 import io.micronaut.context.annotation.Context;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +16,7 @@ import javax.inject.Singleton;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.hazelcast.jet.pipeline.Sinks.logger;
-import static info.jerrinot.micronautjet.MicronautUtils.*;
+import static info.jerrinot.micronautjet.infra.MicronautUtils.*;
 
 @Singleton
 @Context

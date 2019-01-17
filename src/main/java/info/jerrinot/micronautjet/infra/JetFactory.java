@@ -1,4 +1,4 @@
-package info.jerrinot.micronautjet;
+package info.jerrinot.micronautjet.infra;
 
 import com.hazelcast.jet.Jet;
 import com.hazelcast.jet.JetInstance;
