@@ -5,5 +5,5 @@ micronaut:
         port: -1
 
 application:
-    threshold: 42
-    interval-millis: 100
+#    threshold: 42
+#    interval-millis: 100

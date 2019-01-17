@@ -7,9 +7,13 @@ plugins {
 
 apply plugin:"application"
 apply plugin:"java"
+apply plugin: "maven"
 
-version "0.1"
+version "0.1-SNAPSHOT"
 group "info.jerrinot"
+
+shadowDistZip.classifier 'shadow'
+shadowDistTar.classifier 'shadow'
 
 repositories {
     mavenLocal()

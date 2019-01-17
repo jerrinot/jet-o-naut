@@ -1,6 +1,6 @@
 package info.jerrinot.micronautjet;
 
-import io.micronaut.context.annotation.Property;
+import io.micronaut.context.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Singleton;
@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 @Singleton
 public final class SourceContext {
-    @Property(name = "application.interval-millis")
+
+    @Value("${application.interval-millis:1000}")
     private long intervalMillis;
 
     private long intervalNanos;

@@ -6,20 +6,18 @@ import info.jerrinot.micronautjet.infra.MicronautUtils;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
+import io.micronaut.context.annotation.Requires;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 
 @Factory
-class JetFactory {
-
-    @Inject
-    private ApplicationContext applicationContext;
+@Requires(classes = JetInstance.class)
+public class JetFactory {
 
     @Bean
     @Singleton
-    JetInstance jetInstance() {
+    public JetInstance jetInstance(ApplicationContext applicationContext) {
         // we want Jet to pick-up its config from classpath when it exists
         // -> we have to use the non-arg factory method and attach the context later
         JetInstance jet = Jet.newJetInstance();

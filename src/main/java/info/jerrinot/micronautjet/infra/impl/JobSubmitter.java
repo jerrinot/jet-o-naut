@@ -7,6 +7,7 @@ import com.hazelcast.jet.config.JobConfig;
 import com.hazelcast.jet.pipeline.Pipeline;
 import info.jerrinot.micronautjet.infra.PipelineAndConfig;
 import io.micronaut.context.annotation.Context;
+import io.micronaut.context.annotation.Requires;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,6 +15,7 @@ import java.util.stream.Stream;
 
 @Singleton
 @Context
+@Requires(beans = JetInstance.class)
 class JobSubmitter {
     private static final String LOCK_NAME = "jobSubmitterLock";
 
