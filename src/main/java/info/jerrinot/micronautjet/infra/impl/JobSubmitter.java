@@ -5,24 +5,33 @@ import com.hazelcast.jet.JetInstance;
 import com.hazelcast.jet.Job;
 import com.hazelcast.jet.config.JobConfig;
 import com.hazelcast.jet.pipeline.Pipeline;
+import info.jerrinot.micronautjet.infra.PipelineAndConfig;
+import io.micronaut.context.annotation.Context;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.stream.Stream;
 
-
-/**
- * Make sure the job exists once and once only in a cluster. This is a hack which won't be
- * needed in the next version of Hazelcast Jet.
- *
- */
 @Singleton
-class ExclusiveJobSubmitter {
+@Context
+class JobSubmitter {
     private static final String LOCK_NAME = "jobSubmitterLock";
 
     @Inject
     private JetInstance instance;
 
-    Job submitExclusively(Pipeline pipeline, JobConfig config) {
+    @Inject
+    void consume(Stream<PipelineAndConfig> jobs) {
+        jobs.forEach((p) -> submitExclusively(p.getPipeline(), p.getJobConfig()));
+    }
+
+
+    /**
+     * Ensure job exists once and once only in a cluster. This is a hack which won't be
+     * needed in the next version of Hazelcast Jet.
+     *
+     */
+    private Job submitExclusively(Pipeline pipeline, JobConfig config) {
         String name = config.getName();
         if (name == null) {
             throw new IllegalArgumentException("Job name cannot be null");
