@@ -3,3 +3,7 @@ micronaut:
         name: micronautjet
     server:
         port: -1
+
+application:
+    threshold: 42
+    interval-millis: 100
